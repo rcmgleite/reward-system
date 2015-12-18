@@ -1,0 +1,9 @@
+(server/start runnable-service)
+(nubank/start runnable-service)
+(nubank.server/start runnable-service)
+(nubank.server/start runnabl:qe-service)
+(server/start runnable-service)
+\q
+exit
+(server/start runnable-service)
+exit

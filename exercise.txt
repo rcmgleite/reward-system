@@ -1,0 +1,28 @@
+Reward system
+
+A company, called Acme Inc, is planning a way to reward customers for inviting their friends. They're planning a reward system that will
+give customer points for each invitation that he or anyone that was invited by someone that he invited or anyone that was invited by someone that was invited by someone he
+invited. But of course, this value decreases exponentially: he gets (1/2)^k where k is the level of the invitation: level 0 (people he invited) he gets 1 point, level 1 (people invited by a person he invited) he gets
+1/2 points and so on. Only the first invitation counts: so if someone gets invited by someone that was already invited, it doesn't award any points.
+Also, to count as a valid invitation, the invited customer must have invited someone (so customers that didn't invite anyone don't count as points for the customer that invited them)
+
+So, given the input:
+1 2
+1 3 
+3 4
+2 4
+4 5
+4 6
+
+The score is:
+1 - 2.5 (2 because he invited 2 and 3 plus 0.5 as 3 invited 4)
+3 - 1 (1 as 3 invited 4 and 4 invited someone)
+2 - 0 (even as 2 invited 4, it doesn't count as 4 was invited before by 3)
+4 - 0 (invited 5 and 6, but 5 and 6 didn't invite anyone)
+
+Note that 2 invited 4, but, since 3 invited 4 first, customer 3 gets the points.
+
+Write a program that receives a text file with the input and exposes the ranking on a JSON format on a HTTP endpoint. Also, add another endpoint to add a new invitation.
+
+You should deliver a git repository, or a link to a shared private repository on github, bitbucket or similar, with your code and a short README file outlining the solution and explaining how to build and run the code. You should deliver your code in a functional programming language — Clojure, Common Lisp, Scheme, Haskell, ML, F# and Scala are acceptable — and we'll analyse the structure and readability of the code-base.  We expect production-grade code. There is no problem in using libraries, for instance for testing or network interaction, but please avoid using a library that already implements tree algorithms.
+
