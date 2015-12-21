@@ -5,12 +5,14 @@
                               [io.pedestal.http.route.definition :refer [defroutes]]
                               [ring.util.response :as ring-resp]))
 
-(defn ranking-handler
-    [request]
-    (ring-resp/response "TODO - JSON ranking"))
+(defn score-handler [request]
+  (ring-resp/response "TODO"))
+
+(defn invitation-handler [request]
+  (ring-resp/response "TODO"))
 
 (defroutes routes
-    [[["/" {:get ranking-handler}]]])
+    [[["/api/score" {:get score-handler}] ["/api/invitations" {:post invitation-handler}]]])
 
 ;; Consumed by helloworld.server/create-server
 (def service {:env :prod

@@ -1,7 +1,8 @@
 (ns nubank.server
   (:gen-class) ; for -main method in uberjar
   (:require [io.pedestal.http :as server]
-            [nubank.service :as service]))
+            [nubank.service :as service]
+            [nubank.model :as model]))
 
 ;; This is an adapted service map, that can be started and stopped
 ;; From the REPL you can call server/start and server/stop on this service
