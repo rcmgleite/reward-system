@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="749b670b-c308-4621-9d4b-d813b82fe006" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/nubank/model.clj" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/nubank/model_test.clj" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/nubank/models.clj" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/replstate.xml" afterPath="$PROJECT_DIR$/.idea/replstate.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.lein-repl-history" afterPath="$PROJECT_DIR$/.lein-repl-history" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/nubank/server.clj" afterPath="$PROJECT_DIR$/src/nubank/server.clj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/nubank/service.clj" afterPath="$PROJECT_DIR$/src/nubank/service.clj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/META-INF/maven/nubank/nubank/pom.properties" afterPath="$PROJECT_DIR$/target/classes/META-INF/maven/nubank/nubank/pom.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/nubank/service_test.clj" afterPath="$PROJECT_DIR$/test/nubank/service_test.clj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project.clj" afterPath="$PROJECT_DIR$/project.clj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/nubank/model.clj" afterPath="$PROJECT_DIR$/src/nubank/model.clj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/nubank/model_test.clj" afterPath="$PROJECT_DIR$/test/nubank/model_test.clj" />
     </list>
     <ignored path="nubank.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -56,7 +49,17 @@
         <entry file="file://$PROJECT_DIR$/src/nubank/model.clj">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="2" selection-start-line="10" selection-start-column="2" selection-end-line="10" selection-end-column="2" />
+              <caret line="15" column="46" selection-start-line="15" selection-start-column="46" selection-end-line="15" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="project.clj" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project.clj">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="17" column="56" selection-start-line="17" selection-start-column="56" selection-end-line="17" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -75,8 +78,8 @@
       <file leaf-file-name="model_test.clj" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/nubank/model_test.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.05872757">
-              <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+            <state vertical-scroll-proportion="0.85318106">
+              <caret line="82" column="34" selection-start-line="82" selection-start-column="34" selection-end-line="82" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -97,10 +100,11 @@
       <list>
         <option value="$PROJECT_DIR$/src/nubank/nubank/models.clj" />
         <option value="$PROJECT_DIR$/src/nubank/models.clj" />
-        <option value="$PROJECT_DIR$/src/nubank/model.clj" />
         <option value="$PROJECT_DIR$/src/nubank/server.clj" />
         <option value="$PROJECT_DIR$/test/nubank/service_test.clj" />
         <option value="$PROJECT_DIR$/src/nubank/service.clj" />
+        <option value="$PROJECT_DIR$/project.clj" />
+        <option value="$PROJECT_DIR$/src/nubank/model.clj" />
         <option value="$PROJECT_DIR$/test/nubank/model_test.clj" />
       </list>
     </option>
@@ -582,26 +586,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/nubank/server.clj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="46" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/nubank/service.clj">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/nubank/model.clj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="2" selection-start-line="10" selection-start-column="2" selection-end-line="10" selection-end-column="2" />
           <folding />
         </state>
       </provider>
@@ -614,10 +602,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/project.clj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="56" selection-start-line="17" selection-start-column="56" selection-end-line="17" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/nubank/server.clj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="46" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/nubank/model.clj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="46" selection-start-line="15" selection-start-column="46" selection-end-line="15" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test/nubank/model_test.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.05872757">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.85318106">
+          <caret line="82" column="34" selection-start-line="82" selection-start-column="34" selection-end-line="82" selection-end-column="34" />
           <folding />
         </state>
       </provider>
