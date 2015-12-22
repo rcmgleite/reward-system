@@ -18,7 +18,6 @@
       score
       (recur (rest lst) (+ score (score-factor (heigth-from-node invitation-tree (first lst))))))))
 
-
 ; -------------------------------------
 ;            MUTABLE MODEL
 ; -------------------------------------
@@ -38,6 +37,11 @@
 (defn calc-score []
   (reset! score-result (into {} (for [[k v] @invitations] [k (score-for-node @invitations k)]))))
 
+(defn already-invited [n]
+  (if (= (get @invitations n) nil)
+    false
+    true))
+
 ; function that updates the h of a sub-tree on the invitations tree
 (defn update_heigth [n]
   ; TODO
@@ -46,5 +50,4 @@
 ; function to insert an invitation
 (defn insert-invitation [inviter invited]
   ; TODO
-  (swap! invitations assoc inviter (struct node 0 0 (conj ((:children (get invitations inviter))) invited)))
-  (swap! invitations assoc invited (struct node 0 inviter (get invitations invited))))
+  )
