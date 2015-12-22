@@ -9,14 +9,14 @@
       result
       (recur (+ result (math/expt 0.5 curr-h)) (inc curr-h)))))
 
-(defn heigth-from-node [invitation-tree n]
+(defn height-from-node [invitation-tree n]
   (:subtree-h (get invitation-tree n)))
 
 (defn score-for-node [invitation-tree n]
   (loop [lst (:children (get invitation-tree n)) score 0.0]
     (if (empty? lst)
       score
-      (recur (rest lst) (+ score (score-factor (heigth-from-node invitation-tree (first lst))))))))
+      (recur (rest lst) (+ score (score-factor (height-from-node invitation-tree (first lst))))))))
 
 ; -------------------------------------
 ;            MUTABLE MODEL
@@ -46,7 +46,7 @@
 
 ; insert root node on tree
 (defn insert-root [inviter invited]
-  (swap! invitations assoc inviter (new-node -1 -1 [invited])))
+  (swap! invitations assoc inviter (new-node 0 -1 [invited])))
 
 ; return new map to be used on swap! for invitatoins atom
 (defn append-children [inv-tree inviter invited]
@@ -65,20 +65,38 @@
     (insert-root inviter invited)
     (update-inviter-children inviter invited)))
 
+; return new map to be used on swap! for invitatoins atom
+(defn update-node-height [inv-tree n]
+  (let [node-to-update (get inv-tree n)]
+    (assoc inv-tree n (new-node (inc (:subtree-h node-to-update)) (:parent node-to-update) (:children node-to-update)))))
+
+; return parent for the node given
+(defn get-parent-from [node]
+  (get @invitations (:parent node)))
+
+; return true if the 2 nodes have the same height
+(defn same-height [n1 n2]
+  (if (= (:subtree-h n1) (:subtree-h n2))
+    true
+    false))
+
 ; function that updates the h of a sub-tree on the invitations tree
 (defn update-height [n]
-  ; TODO
-  )
+  (if (not= n -1)
+    (do
+      (swap! invitations update-node-height n)
+      (let [curr-node (get @invitations n)]
+        (if (same-height curr-node (get-parent-from curr-node))
+          (recur (:parent curr-node)))))))
 
 ; Insert an invited
 (defn insert-invited [inviter invited]
   (if (not (already-invited invited))
     (do
-      (println invited)
       (swap! invitations assoc invited (new-node -1 inviter []))
       (update-height invited))
     (do
-      (if (= (heigth-from-node @invitations inviter) 0)
+      (if (= (height-from-node @invitations inviter) 0)
         (update-height inviter)))))
 
 (defn insert-invitation [ inviter invited]

@@ -9,7 +9,7 @@
 
 ; Score endpoint
 (defn score-handler [request]
-  (ring-resp/response (json/write-str (model/calc-score))))
+  (ring-resp/response (json/write-str (into (sorted-map) (model/calc-score)))))
 
 ; New invitation endpoint
 (defn invitation-handler [request]

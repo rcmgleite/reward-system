@@ -7,12 +7,12 @@
 (def service
   (::bootstrap/service-fn (bootstrap/create-servlet service/service)))
 
-(deftest get-score
+(deftest get-score-endpoint-test
   (is (=
        (:body (response-for service :get "/api/score"))
-       "{\"1\":2.5,\"2\":0.0,\"3\":1.0,\"4\":0.0,\"5\":0.0,\"6\":0.0}")))
+       "{\"1\":2.875,\"2\":0.0,\"3\":1.75,\"4\":3.5,\"5\":1.0,\"6\":0.0,\"7\":0.0,\"8\":0.0,\"9\":0.0,\"10\":0.0,\"11\":0.0}")))
 
-(deftest insert-invitation
+(deftest insert-invitation-endpoint-test
   (is (.contains
        (:body (response-for service :post "/api/invitations"))
        "TODO")))
