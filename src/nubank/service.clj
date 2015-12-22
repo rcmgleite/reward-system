@@ -14,9 +14,8 @@
 ; New invitation endpoint
 (defn invitation-handler [request]
   (let [inviter (get-in request [:params :inviter]) invited (get-in request [:params :invited])]
-    (dosync
       (model/insert-invitation inviter invited)
-      (ring-resp/response (json/write-str @model/invitations)))))
+      (ring-resp/response (json/write-str {}))))
 
 (defroutes routes
     [[["/api/score" {:get score-handler}] ["/api/invitations" {:post invitation-handler}]]])
