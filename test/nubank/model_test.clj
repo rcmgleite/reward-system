@@ -63,16 +63,16 @@
   (println "[INFO] Running test: score-for-node-test")
   (dosync (ref-set model/invitations mocked-inv-tree))
   (is (= (model/score-for-node 1) 2.875))
-  (is (= (model/score-for-node 2) 0.0))
+  (is (= (model/score-for-node 2) 0))
   (is (= (model/score-for-node 3) 1.75))
   (is (= (model/score-for-node 4) 3.5))
   (is (= (model/score-for-node 5) 1.0))
-  (is (= (model/score-for-node 6) 0.0))
-  (is (= (model/score-for-node 7) 0.0))
-  (is (= (model/score-for-node 8) 0.0))
-  (is (= (model/score-for-node 9) 0.0))
-  (is (= (model/score-for-node 10) 0.0))
-  (is (= (model/score-for-node 11) 0.0)))
+  (is (= (model/score-for-node 6) 0))
+  (is (= (model/score-for-node 7) 0))
+  (is (= (model/score-for-node 8) 0))
+  (is (= (model/score-for-node 9) 0))
+  (is (= (model/score-for-node 10) 0))
+  (is (= (model/score-for-node 11) 0)))
 
 ; ---------------------------------------------------
 ;                ALREADY INVITED TEST

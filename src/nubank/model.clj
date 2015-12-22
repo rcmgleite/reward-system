@@ -3,11 +3,12 @@
 ; -------------------------------------
 ;           FUNCTIONAL MODEL
 ; -------------------------------------
+
+; (1/2)^k where k
 (defn score-factor [h]
-    (loop [result 0.0 curr-h 0]
-    (if (= curr-h h)
-      result
-      (recur (+ result (math/expt 0.5 curr-h)) (inc curr-h)))))
+  (let [hs (take h (range))]
+     (reduce + (map (fn [curr-h]
+                 (math/expt 0.5 curr-h)) hs))))
 
 ; -------------------------------------
 ;            MUTABLE MODEL
@@ -31,10 +32,9 @@
 
 ; returns the score for a given node
 (defn score-for-node [n]
-  (loop [[curr-child & remaining] (:children (get @invitations n)) score 0.0]
-    (if (= curr-child nil)
-      score
-      (recur remaining (+ score (score-factor (height-from-node curr-child)))))))
+  (let [children (:children (get @invitations n))]
+    (reduce + (map (fn [curr-child]
+                     (score-factor (height-from-node curr-child)))children))))
 
 ; Calculate score for all nodes on tree
 ; it acts like a cache so that a request to score doesn't have to calculate it every time.
@@ -51,7 +51,7 @@
 (defn insert-root [inviter invited]
   (dosync (ref-set invitations (assoc @invitations inviter (new-node 0 -1 [invited])))))
 
-; return new map to be used on swap! for invitatoins atom
+; return new map to be used on ref alter functions like alter or swap for invitatoins atom
 (defn append-children [inv-tree inviter invited]
   (let [node-to-update (get inv-tree inviter)]
   (assoc inv-tree inviter (new-node (:subtree-h node-to-update) (:parent node-to-update) (conj (:children node-to-update) invited)))))
@@ -71,7 +71,7 @@
       (if (not= (get @invitations inviter) nil)
         (update-inviter-children inviter invited)))))
 
-; return new map to be used on swap! for invitatoins atom
+; return new map to be used on ref alter functions like alter or swap for invitatoins atom
 (defn inc-node-height [inv-tree n]
   (let [node-to-update (get inv-tree n)]
     (assoc inv-tree n (new-node (inc (:subtree-h node-to-update)) (:parent node-to-update) (:children node-to-update)))))
