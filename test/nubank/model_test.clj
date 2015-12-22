@@ -38,7 +38,7 @@
 ; ---------------------------------------------------
 (deftest height-for-node-test
   (println "[INFO] Running test: height-for-node-test")
-  (reset! model/invitations mocked-inv-tree)
+  (dosync (ref-set model/invitations mocked-inv-tree))
   (let [inv-tree model/invitations]
     (is (= (model/height-from-node @inv-tree 1) 5))
     (is (= (model/height-from-node @inv-tree 2) 1))
@@ -57,7 +57,7 @@
 ; ---------------------------------------------------
 (deftest score-for-node-test
   (println "[INFO] Running test: score-for-node-test")
-  (reset! model/invitations mocked-inv-tree)
+  (dosync (ref-set model/invitations mocked-inv-tree))
   (let [inv-tree model/invitations]
     (is (= (model/score-for-node @inv-tree 1) 2.875))
     (is (= (model/score-for-node @inv-tree 2) 0.0))
@@ -76,7 +76,7 @@
 ; ---------------------------------------------------
 (deftest already-invited-test
   (println "[INFO] Running test: already-invited-test")
-  (reset! model/invitations mocked-inv-tree)
+  (dosync (ref-set model/invitations mocked-inv-tree))
     (is (= (model/already-invited 4) true))
     (is (= (model/already-invited 5) true))
     (is (= (model/already-invited 6) true))
@@ -89,7 +89,6 @@
 ; ---------------------------------------------------
 ; TODO
 
-
 ; ---------------------------------------------------
 ; ---------------------------------------------------
 ;                 MUTABLE MODEL TESTS
@@ -97,7 +96,7 @@
 ; ---------------------------------------------------
 (deftest insertion-test
   (println "[INFO] Running test: insertion-test")
-  (reset! model/invitations {})
+  (dosync (ref-set model/invitations {}))
   (model/insert-invitation 1 2)
   (model/insert-invitation 1 3)
   (model/insert-invitation 3 4)
