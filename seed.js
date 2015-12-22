@@ -22,7 +22,7 @@ function make_request(host, path, port, method, request_body){
 		});
 
 		response.on('end', function () {
-			console.log(str);
+			console.log(str + "\n\n");
 		});
 	}
 

@@ -9,17 +9,6 @@
       result
       (recur (+ result (math/expt 0.5 curr-h)) (inc curr-h)))))
 
-; returns the subtree-h for a given node
-(defn height-from-node [invitation-tree n]
-  (:subtree-h (get invitation-tree n)))
-
-; returns the score for a given node
-(defn score-for-node [invitation-tree n]
-  (loop [lst (:children (get invitation-tree n)) score 0.0]
-    (if (empty? lst)
-      score
-      (recur (rest lst) (+ score (score-factor (height-from-node invitation-tree (first lst))))))))
-
 ; -------------------------------------
 ;            MUTABLE MODEL
 ; -------------------------------------
@@ -36,10 +25,21 @@
 ; global variable that holds the calculated score for the invitations given
 (def score-result (atom {}))
 
+; returns the subtree-h for a given node
+(defn height-from-node [n]
+  (:subtree-h (get @invitations n)))
+
+; returns the score for a given node
+(defn score-for-node [n]
+  (loop [[curr-child & remaining] (:children (get @invitations n)) score 0.0]
+    (if (= curr-child nil)
+      score
+      (recur remaining (+ score (score-factor (height-from-node curr-child)))))))
+
 ; Calculate score for all nodes on tree
 ; it acts like a cache so that a request to score doesn't have to calculate it every time.
 (defn calc-score []
-  (reset! score-result (into {} (for [[k v] @invitations] [k (score-for-node @invitations k)]))))
+  (reset! score-result (into {} (for [[k v] @invitations] [k (score-for-node k)]))))
 
 ; Verify if node n was already invited
 (defn already-invited [n]
@@ -67,10 +67,12 @@
 (defn insert-inviter [inviter invited]
   (if (empty? @invitations)
     (insert-root inviter invited)
-    (update-inviter-children inviter invited)))
+    (do
+      (if (not= (get @invitations inviter) nil)
+        (update-inviter-children inviter invited)))))
 
 ; return new map to be used on swap! for invitatoins atom
-(defn update-node-height [inv-tree n]
+(defn inc-node-height [inv-tree n]
   (let [node-to-update (get inv-tree n)]
     (assoc inv-tree n (new-node (inc (:subtree-h node-to-update)) (:parent node-to-update) (:children node-to-update)))))
 
@@ -90,7 +92,7 @@
     (loop [n n]
       (if (not= n -1)
         (do
-          (alter invitations update-node-height n)
+          (alter invitations inc-node-height n)
           (let [curr-node (get @invitations n)]
             (if (same-height curr-node (get-parent-from curr-node))
               (recur (:parent curr-node)))))))))
@@ -99,14 +101,12 @@
 ; Insert an invited
 (defn insert-invited [inviter invited]
   (dosync
-    (if (not (already-invited invited))
-      (do
-        (alter invitations assoc invited (new-node -1 inviter []))
-        (update-height invited))
-      (do
-        (if (= (height-from-node @invitations inviter) 0)
-          (update-height inviter))))))
-
+    (cond
+      (and (already-invited invited) (= (height-from-node inviter) 0))
+        (update-height inviter)
+        :else (do
+                (alter invitations assoc invited (new-node -1 inviter []))
+                (update-height invited)))))
 
 (defn insert-invitation [ inviter invited]
   (dosync

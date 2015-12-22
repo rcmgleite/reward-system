@@ -14,6 +14,6 @@
 
 (deftest insert-invitation-endpoint-test
   (is (.contains
-       (:body (response-for service :post "/api/invitations"))
+       (:body (response-for service :post "/api/invitations?inviter=11&invited=12"))
        "TODO")))
 
