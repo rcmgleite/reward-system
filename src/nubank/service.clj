@@ -13,7 +13,8 @@
 
 ; New invitation endpoint
 (defn invitation-handler [request]
-  (ring-resp/response "TODO"))
+  (let [inviter (get-in request [:body :inviter]) invited (get-in request [:body :invited])]
+    (ring-resp/response (str "inviter: " inviter " invited: " invited))))
 
 (defroutes routes
     [[["/api/score" {:get score-handler}] ["/api/invitations" {:post invitation-handler}]]])

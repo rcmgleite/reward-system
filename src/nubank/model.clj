@@ -34,20 +34,54 @@
 ; global variable that holds the calculated score for the invitations given
 (def score-result (atom {}))
 
+; Calculate score for all nodes on tree
 (defn calc-score []
   (reset! score-result (into {} (for [[k v] @invitations] [k (score-for-node @invitations k)]))))
 
+; Verify if node n was already invited
 (defn already-invited [n]
   (if (= (get @invitations n) nil)
     false
     true))
 
+; insert root node on tree
+(defn insert-root [inviter invited]
+  (swap! invitations assoc inviter (new-node -1 -1 [invited])))
+
+; return new map to be used on swap! for invitatoins atom
+(defn append-children [inv-tree inviter invited]
+  (let [node-to-update (get inv-tree inviter)]
+  (assoc inv-tree inviter (new-node (:subtree-h node-to-update) (:parent node-to-update) (conj (:children node-to-update) invited)))))
+
+; add the newest invited to the inviter children vec. Executes only if
+; invited was not previously invited.
+(defn update-inviter-children [inviter invited]
+  (if (not (already-invited invited))
+    (swap! invitations append-children inviter invited)))
+
+; Insert an inviter
+(defn insert-inviter [inviter invited]
+  (if (empty? @invitations)
+    (insert-root inviter invited)
+    (update-inviter-children inviter invited)))
+
 ; function that updates the h of a sub-tree on the invitations tree
-(defn update_heigth [n]
+(defn update-height [n]
   ; TODO
   )
 
-; function to insert an invitation
-(defn insert-invitation [inviter invited]
-  ; TODO
-  )
+; Insert an invited
+(defn insert-invited [inviter invited]
+  (if (not (already-invited invited))
+    (do
+      (println invited)
+      (swap! invitations assoc invited (new-node -1 inviter []))
+      (update-height invited))
+    (do
+      (if (= (heigth-from-node @invitations inviter) 0)
+        (update-height inviter)))))
+
+(defn insert-invitation [ inviter invited]
+  (insert-inviter inviter invited)
+  (insert-invited inviter invited))
+
