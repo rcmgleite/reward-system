@@ -1,13 +1,17 @@
 (ns nubank.service
-      (:require [io.pedestal.http :as bootstrap]
-                              [io.pedestal.http.route :as route]
-                              [io.pedestal.http.body-params :as body-params]
-                              [io.pedestal.http.route.definition :refer [defroutes]]
-                              [ring.util.response :as ring-resp]))
+  (:require [io.pedestal.http :as bootstrap]
+            [io.pedestal.http.route :as route]
+            [io.pedestal.http.body-params :as body-params]
+            [io.pedestal.http.route.definition :refer [defroutes]]
+            [clojure.data.json :as json]
+            [ring.util.response :as ring-resp]
+            [nubank.model :as model]))
 
+; Score endpoint
 (defn score-handler [request]
-  (ring-resp/response "TODO"))
+  (ring-resp/response (json/write-str (model/calc-score))))
 
+; New invitation endpoint
 (defn invitation-handler [request]
   (ring-resp/response "TODO"))
 

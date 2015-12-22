@@ -18,25 +18,33 @@
       score
       (recur (rest lst) (+ score (score-factor (heigth-from-node invitation-tree (first lst))))))))
 
-(defn score [invitation-tree]
-  )
 
 ; -------------------------------------
 ;            MUTABLE MODEL
 ; -------------------------------------
-;; node struct
+; node struct representation
 (defstruct node :subtree-h :parent :children)
 
+; function that returns a new node
 (defn new-node [h parent children]
   (struct node h parent children))
 
-;; global variable that holds all invitations
+; global variable that holds all invitations
 (def invitations (atom {}))
 
+; global variable that holds the calculated score for the invitations given
+(def score-result (atom {}))
+
+(defn calc-score []
+  (reset! score-result (into {} (for [[k v] @invitations] [k (score-for-node @invitations k)]))))
+
+; function that updates the h of a sub-tree on the invitations tree
 (defn update_heigth [n]
+  ; TODO
   )
 
-;; function to insert an invitation
+; function to insert an invitation
 (defn insert-invitation [inviter invited]
+  ; TODO
   (swap! invitations assoc inviter (struct node 0 0 (conj ((:children (get invitations inviter))) invited)))
   (swap! invitations assoc invited (struct node 0 inviter (get invitations invited))))

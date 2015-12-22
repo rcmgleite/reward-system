@@ -16,6 +16,7 @@
                  [org.slf4j/jul-to-slf4j "1.7.12"]
                  [org.slf4j/jcl-over-slf4j "1.7.12"]
                  [org.clojure/math.numeric-tower "0.0.1"]
+                 [org.clojure/data.json "0.2.6"]
                  [org.slf4j/log4j-over-slf4j "1.7.12"]]
   :min-lein-version "2.0.0"
   :resource-paths ["config", "resources"]

@@ -10,7 +10,7 @@
 (deftest get-score
   (is (=
        (:body (response-for service :get "/api/score"))
-       "TODO")))
+       "{\"1\":2.5,\"2\":0.0,\"3\":1.0,\"4\":0.0,\"5\":0.0,\"6\":0.0}")))
 
 (deftest insert-invitation
   (is (.contains

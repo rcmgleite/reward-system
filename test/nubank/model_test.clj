@@ -5,13 +5,13 @@
 ; ---------------------------------------------------
 ;                 MOCKED INVITATION TREE
 ; ---------------------------------------------------
-(def mocked-inv-tree (atom {1 (model/new-node 3 -1 [2 3]),
+(reset! model/invitations {1 (model/new-node 3 -1 [2 3]),
                       2 (model/new-node 1 1 [])
                       3 (model/new-node 2 1 [4])
                       4 (model/new-node 1 3 [5 6])
                       5 (model/new-node 0 4 [])
                       6 (model/new-node 0 4 [])
-                      }))
+                      })
 
 ; ---------------------------------------------------
 ;                 SCORE FACTOR TESTS
@@ -32,54 +32,54 @@
 ;                 HEIGHT FOR NODE TESTS
 ; ---------------------------------------------------
 (deftest heigth-for-node-1
-  (let [inv-tree mocked-inv-tree]
+  (let [inv-tree model/invitations]
     (is (= (model/heigth-from-node @inv-tree 1) 3))))
 
 (deftest heigth-for-node-2
-  (let [inv-tree mocked-inv-tree]
+  (let [inv-tree model/invitations]
     (is (= (model/heigth-from-node @inv-tree 2) 1))))
 
 (deftest heigth-for-node-3
-  (let [inv-tree mocked-inv-tree]
+  (let [inv-tree model/invitations]
     (is (= (model/heigth-from-node @inv-tree 3) 2))))
 
 (deftest heigth-for-node-4
-  (let [inv-tree mocked-inv-tree]
+  (let [inv-tree model/invitations]
     (is (= (model/heigth-from-node @inv-tree 4) 1))))
 
 (deftest heigth-for-node-5
-  (let [inv-tree mocked-inv-tree]
+  (let [inv-tree model/invitations]
     (is (= (model/heigth-from-node @inv-tree 5) 0))))
 
 (deftest heigth-for-node-6
-  (let [inv-tree mocked-inv-tree]
+  (let [inv-tree model/invitations]
     (is (= (model/heigth-from-node @inv-tree 6) 0))))
 
 ; ---------------------------------------------------
 ;                 SCORE FOR NODE TESTS
 ; ---------------------------------------------------
 (deftest score-for-node-test1
-  (let [inv-tree mocked-inv-tree]
+  (let [inv-tree model/invitations]
     (is (= (model/score-for-node @inv-tree 1) 2.5))))
 
 (deftest score-for-node-test2
-  (let [inv-tree mocked-inv-tree]
+  (let [inv-tree model/invitations]
     (is (= (model/score-for-node @inv-tree 2) 0.0))))
 
 (deftest score-for-node-test3
-  (let [inv-tree mocked-inv-tree]
+  (let [inv-tree model/invitations]
     (is (= (model/score-for-node @inv-tree 3) 1.0))))
 
 (deftest score-for-node-test4
-  (let [inv-tree mocked-inv-tree]
+  (let [inv-tree model/invitations]
     (is (= (model/score-for-node @inv-tree 4) 0.0))))
 
 (deftest score-for-node-test5
-  (let [inv-tree mocked-inv-tree]
+  (let [inv-tree model/invitations]
     (is (= (model/score-for-node @inv-tree 5) 0.0))))
 
 (deftest score-for-node-test6
-  (let [inv-tree mocked-inv-tree]
+  (let [inv-tree model/invitations]
     (is (= (model/score-for-node @inv-tree 6) 0.0))))
 ; ---------------------------------------------------
 ;                COMPLETE SCORE TESTS
