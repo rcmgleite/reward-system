@@ -68,30 +68,42 @@
     false))
 
 (defn update-height [n]
-  "function that updates the h of a sub-tree on the invitations-tree tree"
-  (dosync
-    (loop [n n]
-      (when (not= n -1)
-        (alter invitations-tree inc-node-height n)
-        (let [curr-node (get @invitations-tree n)]
-          (if (same-height curr-node (get-parent-from curr-node))
-            (recur (:parent curr-node))))))))
+  "function that updates the h of a sub-tree on the invitations-tree tree. Must be called inside transaction"
+  (loop [n n]
+    (when (not= n -1)
+      (alter invitations-tree inc-node-height n)
+      (let [curr-node (get @invitations-tree n)]
+        (if (same-height curr-node (get-parent-from curr-node))
+          (recur (:parent curr-node)))))))
+
+(defn insert-root-node [inviter invited]
+  "Insert root node on tree. Must be called inside transaction"
+  (ref-set invitations-tree (assoc @invitations-tree inviter (new-node 0 -1 [invited]))))
+
+(defn insert-invited-node [inviter invited]
+  "Insert invited node on tree. Must be called inside transaction"
+  (alter invitations-tree assoc invited (new-node -1 inviter [])))
+
+(defn update-inviter-children-lst [inviter invited]
+  "Update inviter children list. Must be called inside transaction"
+  (alter invitations-tree append-children inviter invited))
+
+(defn insert-with-root [inviter invited]
+  "insert invitation when tree is empty. Must be called inside transaction"
+  (insert-root-node inviter invited)
+  (insert-invited-node inviter invited)
+  (update-height invited))
+
+(defn insert-and-update [inviter invited]
+  "Insert invitation when tree in not empty. Must be called inside transaction"
+  (update-inviter-children-lst inviter invited)
+  (insert-invited-node inviter invited)
+  (update-height invited))
 
 (defn insert-invitation [inviter invited]
-  "insert new invitation on tree. uses refs for thread-safety"
+  "Insert new invitation to tree"
   (dosync
-    (if (not (already-invited invited))
-      (do
-        (if (empty? @invitations-tree)
-          (do
-            (ref-set invitations-tree (assoc @invitations-tree inviter (new-node 0 -1 [invited])))
-            (alter invitations-tree assoc invited (new-node -1 inviter []))
-            (update-height invited))
-          (do
-            (if (already-invited inviter)
-              (do
-                (alter invitations-tree append-children inviter invited)
-                (alter invitations-tree assoc invited (new-node -1 inviter []))
-                (update-height invited))))))
-      (do
-        (update-height inviter)))))
+    (cond
+      (and (not (already-invited invited)) (empty? @invitations-tree)) (insert-with-root inviter invited)
+      (and (not (already-invited invited)) (not (empty? @invitations-tree))) (insert-and-update inviter invited)
+      (already-invited invited) (update-height inviter))))
