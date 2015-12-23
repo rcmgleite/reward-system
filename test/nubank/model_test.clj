@@ -38,79 +38,72 @@
 ; ---------------------------------------------------
 (deftest height-for-node-test
   (println "[INFO] Running test: height-for-node-test")
-  (reset! model/invitations mocked-inv-tree)
-  (let [inv-tree model/invitations]
-    (is (= (model/height-from-node @inv-tree 1) 5))
-    (is (= (model/height-from-node @inv-tree 2) 1))
-    (is (= (model/height-from-node @inv-tree 3) 4))
-    (is (= (model/height-from-node @inv-tree 4) 3))
-    (is (= (model/height-from-node @inv-tree 5) 2))
-    (is (= (model/height-from-node @inv-tree 6) 1))
-    (is (= (model/height-from-node @inv-tree 7) 1))
-    (is (= (model/height-from-node @inv-tree 8) 0))
-    (is (= (model/height-from-node @inv-tree 9) 0))
-    (is (= (model/height-from-node @inv-tree 10) 1))
-    (is (= (model/height-from-node @inv-tree 11) 0))))
+  (is (= (model/height-from-node mocked-inv-tree 1) 5))
+  (is (= (model/height-from-node mocked-inv-tree 2) 1))
+  (is (= (model/height-from-node mocked-inv-tree 3) 4))
+  (is (= (model/height-from-node mocked-inv-tree 4) 3))
+  (is (= (model/height-from-node mocked-inv-tree 5) 2))
+  (is (= (model/height-from-node mocked-inv-tree 6) 1))
+  (is (= (model/height-from-node mocked-inv-tree 7) 1))
+  (is (= (model/height-from-node mocked-inv-tree 8) 0))
+  (is (= (model/height-from-node mocked-inv-tree 9) 0))
+  (is (= (model/height-from-node mocked-inv-tree 10) 1))
+  (is (= (model/height-from-node mocked-inv-tree 11) 0)))
 
 ; ---------------------------------------------------
 ;                 SCORE FOR NODE TESTS
 ; ---------------------------------------------------
 (deftest score-for-node-test
   (println "[INFO] Running test: score-for-node-test")
-  (reset! model/invitations mocked-inv-tree)
-  (let [inv-tree model/invitations]
-    (is (= (model/score-for-node @inv-tree 1) 2.875))
-    (is (= (model/score-for-node @inv-tree 2) 0.0))
-    (is (= (model/score-for-node @inv-tree 3) 1.75))
-    (is (= (model/score-for-node @inv-tree 4) 3.5))
-    (is (= (model/score-for-node @inv-tree 5) 1.0))
-    (is (= (model/score-for-node @inv-tree 6) 0.0))
-    (is (= (model/score-for-node @inv-tree 7) 0.0))
-    (is (= (model/score-for-node @inv-tree 8) 0.0))
-    (is (= (model/score-for-node @inv-tree 9) 0.0))
-    (is (= (model/score-for-node @inv-tree 10) 0.0))
-    (is (= (model/score-for-node @inv-tree 11) 0.0))))
+  (is (= (model/score-for-node mocked-inv-tree 1) 2.875))
+  (is (= (model/score-for-node mocked-inv-tree 2) 0))
+  (is (= (model/score-for-node mocked-inv-tree 3) 1.75))
+  (is (= (model/score-for-node mocked-inv-tree 4) 3.5))
+  (is (= (model/score-for-node mocked-inv-tree 5) 1.0))
+  (is (= (model/score-for-node mocked-inv-tree 6) 0))
+  (is (= (model/score-for-node mocked-inv-tree 7) 0))
+  (is (= (model/score-for-node mocked-inv-tree 8) 0))
+  (is (= (model/score-for-node mocked-inv-tree 9) 0))
+  (is (= (model/score-for-node mocked-inv-tree 10) 0))
+  (is (= (model/score-for-node mocked-inv-tree 11) 0)))
 
 ; ---------------------------------------------------
 ;                ALREADY INVITED TEST
 ; ---------------------------------------------------
 (deftest already-invited-test
   (println "[INFO] Running test: already-invited-test")
-  (reset! model/invitations mocked-inv-tree)
-    (is (= (model/already-invited 4) true))
-    (is (= (model/already-invited 5) true))
-    (is (= (model/already-invited 6) true))
-    (is (= (model/already-invited 10) true))
-    (is (= (model/already-invited 12) false))
-    (is (= (model/already-invited 14) false)))
-
-; ---------------------------------------------------
-;                COMPLETE SCORE TESTS
-; ---------------------------------------------------
-; TODO
-
+  (is (= (model/already-invited mocked-inv-tree 4) true))
+  (is (= (model/already-invited mocked-inv-tree 5) true))
+  (is (= (model/already-invited mocked-inv-tree 6) true))
+  (is (= (model/already-invited mocked-inv-tree 10) true))
+  (is (= (model/already-invited mocked-inv-tree 12) false))
+  (is (= (model/already-invited mocked-inv-tree 14) false)))
 
 ; ---------------------------------------------------
 ; ---------------------------------------------------
 ;                 MUTABLE MODEL TESTS
 ; ---------------------------------------------------
 ; ---------------------------------------------------
-(deftest insertion-test
+
+; ---------------------------------------------------
+;                   INSERTION TEST
+; ---------------------------------------------------
+(deftest insertion-test-1
   (println "[INFO] Running test: insertion-test")
-  (reset! model/invitations {})
-  (model/insert-invitation 1 2)
-  (model/insert-invitation 1 3)
-  (model/insert-invitation 3 4)
-  (model/insert-invitation 4 3)
-  (model/insert-invitation 2 4)
-  (model/insert-invitation 4 5)
-  (model/insert-invitation 4 6)
-  (model/insert-invitation 4 7)
-  (model/insert-invitation 5 6)
-  (model/insert-invitation 6 8)
-  (model/insert-invitation 6 9)
-  (model/insert-invitation 7 1)
-  (model/insert-invitation 5 10)
-  (model/insert-invitation 10 11)
-  (is (= @model/invitations mocked-inv-tree)))
+  (reset! model/invites {})
+  (model/insert-invite 1 2)
+  (model/insert-invite 1 3)
+  (model/insert-invite 3 4)
+  (model/insert-invite 4 3)
+  (model/insert-invite 2 4)
+  (model/insert-invite 4 5)
+  (model/insert-invite 4 6)
+  (model/insert-invite 4 7)
+  (model/insert-invite 5 6)
+  (model/insert-invite 6 8)
+  (model/insert-invite 6 9)
+  (model/insert-invite 7 1)
+  (model/insert-invite 5 10)
+  (model/insert-invite 10 11)
+  (is (= @model/invites mocked-inv-tree)))
 
