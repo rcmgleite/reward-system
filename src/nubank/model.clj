@@ -84,10 +84,6 @@
   "Insert invited node on tree. Must be called inside transaction"
   (alter invitations-tree assoc invited (new-node -1 inviter [])))
 
-(defn update-inviter-children-lst [inviter invited]
-  "Update inviter children list. Must be called inside transaction"
-  (alter invitations-tree append-children inviter invited))
-
 (defn insert-with-root [inviter invited]
   "insert invitation when tree is empty. Must be called inside transaction"
   (insert-root-node inviter invited)
@@ -96,7 +92,7 @@
 
 (defn insert-and-update [inviter invited]
   "Insert invitation when tree in not empty. Must be called inside transaction"
-  (update-inviter-children-lst inviter invited)
+  (alter invitations-tree append-children inviter invited)
   (insert-invited-node inviter invited)
   (update-height invited))
 
@@ -106,4 +102,4 @@
     (cond
       (and (not (already-invited invited)) (empty? @invitations-tree)) (insert-with-root inviter invited)
       (and (not (already-invited invited)) (not (empty? @invitations-tree))) (insert-and-update inviter invited)
-      (already-invited invited) (update-height inviter))))
+      (and (already-invited invited) (= (height-from-node inviter) 0) ) (update-height inviter))))
