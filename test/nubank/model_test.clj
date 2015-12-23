@@ -80,6 +80,75 @@
   (is (= (model/already-invited mocked-inv-tree 14) false)))
 
 ; ---------------------------------------------------
+;                 APPEND CHILDREN TESTS
+; ---------------------------------------------------
+(deftest append-children-test
+  (println "[INFO] Running test: append-children-test")
+  (def t (model/append-children {1 {:parent -1 :subtree-h 0 :children [2]}} 1 3))
+  (is (= (t {1 {:parent -1  :subtree-h 0 :children [2 3]}})))
+  (def t (model/append-children {1 {:parent -1  :subtree-h 0 :children [2]}} 1 4))
+  (is (= (t {1 {:parent -1  :subtree-h 0 :children [2 3 4]}})))
+  )
+
+; ---------------------------------------------------
+;                 INC NODE HEIGHT TESTS
+; ---------------------------------------------------
+(deftest inc-node-height-test
+  (println "[INFO] Running test: inc-node-height-test")
+  (def t {1 {:parent -1 :subtree-h 0 :children [2]} 2 {:parent 1 :subtree-h -1 :children []}})
+  (def t (model/inc-node-height t 1))
+  (is (= t {1 {:parent -1 :subtree-h 1 :children [2]} 2 {:parent 1 :subtree-h -1 :children []}}))
+  (def t (model/inc-node-height t 1))
+  (def t (model/inc-node-height t 1))
+  (def t (model/inc-node-height t 1))
+  (is (= t {1 {:parent -1 :subtree-h 4 :children [2]} 2 {:parent 1 :subtree-h -1 :children []}}))
+  (def t (model/inc-node-height t 2))
+  (def t (model/inc-node-height t 2))
+  (is (= t {1 {:parent -1 :subtree-h 4 :children [2]} 2 {:parent 1 :subtree-h 1 :children []}})))
+
+; ---------------------------------------------------
+;                 UPDATE HEIGHT TESTS
+; ---------------------------------------------------
+(deftest update-height-test
+  (println "[INFO] Running test: update-height-test")
+  (def t {1 {:parent -1 :subtree-h 0 :children [2]} 2 {:parent 1 :subtree-h -1 :children []}})
+  (def t (model/update-height t 2))
+  (is (= t {1 {:parent -1 :subtree-h 1 :children [2]} 2 {:parent 1 :subtree-h 0 :children []}}))
+  (def t  (merge t {2 {:parent 1 :subtree-h 0 :children [3]} 3 {:parent 2 :subtree-h -1 :children []}}))
+  (def t (model/update-height t 3))
+  (is (= t {1 {:parent -1 :subtree-h 2 :children [2]} 2 {:parent 1 :subtree-h 1 :children [3]} 3 {:parent 2 :subtree-h 0 :children []}})))
+
+; ---------------------------------------------------
+;                 INSERT ROOT NODE TESTS
+; ---------------------------------------------------
+(deftest insert-root-node-test
+  (println "[INFO] Running test: insert-root-node-test")
+  (is (= (model/insert-root-node {} 1 2) {1 {:parent -1 :subtree-h 0 :children [2]}})))
+
+; ---------------------------------------------------
+;                 INSERT INVITED NODE TESTS
+; ---------------------------------------------------
+(deftest insert-invited-node-test
+  (println "[INFO] Running test: insert-invited-node-test")
+  (is (= (model/insert-invited-node {} 1 2) {2 {:parent 1 :subtree-h -1 :children []}})))
+
+; ---------------------------------------------------
+;                 INSERT NEW INVITE TESTS
+; ---------------------------------------------------
+(deftest insert-new-invite-test
+  (println "[INFO] Running test: insert-new-invite-test")
+  (def t (model/insert-new-invite {} 1 2))
+  (is (= t {1 {:parent -1 :subtree-h 1 :children [2]} 2 {:parent 1 :subtree-h 0 :children []}}))
+  (def t (model/insert-new-invite t 1 3))
+  (is (= t {1 {:parent -1 :subtree-h 1 :children [2 3]} 2 {:parent 1 :subtree-h 0 :children []} 3 {:parent 1 :subtree-h 0 :children []}}))
+  (def t (model/insert-new-invite t 2 4))
+  (is (= t {1 {:parent -1 :subtree-h 2 :children [2 3]} 2 {:parent 1 :subtree-h 1 :children [4]} 3 {:parent 1 :subtree-h 0 :children []} 4 {:parent 2 :subtree-h 0 :children []}}))
+  (def t (model/insert-new-invite t 4 5))
+  (is (= (get-in t [1 :subtree-h]) 3))
+  (is (= (get-in t [2 :subtree-h]) 2))
+  (is (= (get-in t [3 :subtree-h]) 0)))
+
+; ---------------------------------------------------
 ; ---------------------------------------------------
 ;                 MUTABLE MODEL TESTS
 ; ---------------------------------------------------
@@ -88,7 +157,7 @@
 ; ---------------------------------------------------
 ;                   INSERTION TEST
 ; ---------------------------------------------------
-(deftest insertion-test-1
+(deftest insertion-test-1                                   ;TODO Add more assertions between each insert-invite call
   (println "[INFO] Running test: insertion-test")
   (reset! model/invites {})
   (model/insert-invite 1 2)
@@ -105,5 +174,10 @@
   (model/insert-invite 7 1)
   (model/insert-invite 5 10)
   (model/insert-invite 10 11)
+  (model/insert-invite 2 1)
+  (model/insert-invite 2 3)
+  (model/insert-invite 5 8)
+  (model/insert-invite 5 6)
+  (model/insert-invite 5 10)
   (is (= @model/invites mocked-inv-tree)))
 

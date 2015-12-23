@@ -65,6 +65,7 @@
   "Insert invited node on the given tree tree."
   (assoc tree invited (new-node -1 inviter [])))
 
+; FIXME - smells... Maybe cond?
 (defn insert-new-invite [tree inviter invited]
   "Insert invitation on tree. Must be called inside transaction"
   (if (empty? tree)
@@ -91,6 +92,7 @@
 
 (defn insert-invite [inviter invited]
   "Insert new invitation to global invites"
-  (if (and (already-invited @invites invited) (= (height-from-node @invites inviter) 0))
-    (update-invites (update-height @invites inviter))
+  (if (already-invited @invites invited)
+    (do
+      (when (= (height-from-node @invites inviter) 0) (update-invites (update-height @invites inviter))))
     (update-invites (insert-new-invite @invites inviter invited))))
