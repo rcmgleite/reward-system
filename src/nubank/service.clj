@@ -14,7 +14,7 @@
 ; New invitation endpoint
 (defn invitation-handler [request]
   (let [inviter (get-in request [:params :inviter]) invited (get-in request [:params :invited])]
-      (model/insert-invitation inviter invited)
+      (model/insert-invite inviter invited)
       (ring-resp/response (json/write-str {}))))
 
 (defroutes routes

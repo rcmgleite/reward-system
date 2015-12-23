@@ -11,10 +11,11 @@
   (struct node h parent children))
 
 (defn score-factor [h]
-  "(1/2)^k where k"
+  "(1/2)^k"
   (let [hs (take h (range))]
      (reduce + (map (fn [curr-h]
                  (math/expt 0.5 curr-h)) hs))))
+
 (defn get-parent-from [tree node]
   "return parent for the node given"
   (get tree (:parent node)))
@@ -46,7 +47,7 @@
     (assoc-in inv-tree [n :subtree-h] (inc (:subtree-h node-to-update)))))
 
 (defn update-height [tree n]
-  "function that updates the h of a sub-tree on the invitations-tree tree."
+  "function that updates the h of a sub-tree on the invites tree."
   (loop [tree tree n n]
     (if (not= n -1)
       (do
@@ -64,7 +65,7 @@
   "Insert invited node on the given tree tree."
   (assoc tree invited (new-node -1 inviter [])))
 
-(defn insert-new-invitation [tree inviter invited]
+(defn insert-new-invite [tree inviter invited]
   "Insert invitation on tree. Must be called inside transaction"
   (if (empty? tree)
     (update-height (insert-invited-node (insert-root-node tree inviter invited) inviter invited) invited)
@@ -73,23 +74,23 @@
 ; -------------------------------------
 ;            MUTABLE MODEL
 ; -------------------------------------
-; global variable that holds all invitations-tree
-(def invitations-tree (ref {}))
+; global variable that holds all invites
+(def invites (atom {}))
 
-; global variable that holds the calculated score for the invitations-tree given
+; global variable that holds the calculated score for the invites given
 (def score-result (atom {}))
 
 ; it acts like a cache so that a request to score doesn't have to calculate it every time.
 (defn calc-score []
   "Calculate score for all nodes on tree"
-  (reset! score-result (into {} (for [[k v] @invitations-tree] [k (score-for-node @invitations-tree k)]))))
+  (reset! score-result (into {} (for [[k v] @invites] [k (score-for-node @invites k)]))))
 
-(defn update-invitations-tree [updated-tree]
-  (alter invitations-tree merge updated-tree))
+(defn update-invites [updated-tree]
+  "update atom variable using alter with merge as fn"
+  (swap! invites merge updated-tree))
 
-(defn insert-invitation [inviter invited]
-  "Insert new invitation to global invitations-tree"
-  (dosync
-    (cond
-      (and (not (already-invited @invitations-tree invited))) (update-invitations-tree (insert-new-invitation @invitations-tree inviter invited))
-      (and (already-invited @invitations-tree invited) (= (height-from-node @invitations-tree inviter) 0) ) (update-invitations-tree (update-height @invitations-tree inviter)))))
+(defn insert-invite [inviter invited]
+  "Insert new invitation to global invites"
+  (cond
+    (and (not (already-invited @invites invited))) (update-invites (insert-new-invite @invites inviter invited))
+    (and (already-invited @invites invited) (= (height-from-node @invites inviter) 0)) (update-invites (update-height @invites inviter))))

@@ -12,7 +12,7 @@
        (:body (response-for service :get "/api/score"))
        "{\"1\":2.875,\"2\":0,\"3\":1.75,\"4\":3.5,\"5\":1.0,\"6\":0,\"7\":0,\"8\":0,\"9\":0,\"10\":0,\"11\":0}")))
 
-(deftest insert-invitation-endpoint-test
+(deftest insert-invite-endpoint-test
   (is (.contains
        (:body (response-for service :post "/api/invitations?inviter=11&invited=12"))
        "{}")))
