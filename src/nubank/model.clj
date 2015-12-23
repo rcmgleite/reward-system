@@ -1,5 +1,5 @@
 (ns nubank.model
-  (:require [clojure.math.numeric-tower :as math]))
+  (:require [nubank.utils :as utils]))
 ; -------------------------------------
 ;           FUNCTIONAL MODEL
 ; -------------------------------------
@@ -14,7 +14,7 @@
   "(1/2)^k"
   (let [hs (take h (range))]
      (reduce + (map (fn [curr-h]
-                 (math/expt 0.5 curr-h)) hs))))
+                 (utils/exp 0.5 curr-h)) hs))))
 
 (defn get-parent-from [tree node]
   "return parent for the node given"

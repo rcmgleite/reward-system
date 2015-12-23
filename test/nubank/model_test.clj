@@ -28,7 +28,7 @@
 ; ---------------------------------------------------
 (deftest score-factor-test
   (println "[INFO] Running test: score-factor-test")
-  (is (= (model/score-factor 1) 1.0))
+  (is (= (model/score-factor 1) 1))
   (is (= (model/score-factor 2) 1.5))
   (is (= (model/score-factor 3) 1.75))
   (is (= (model/score-factor 4) 1.875)))
@@ -59,7 +59,7 @@
   (is (= (model/score-for-node mocked-inv-tree 2) 0))
   (is (= (model/score-for-node mocked-inv-tree 3) 1.75))
   (is (= (model/score-for-node mocked-inv-tree 4) 3.5))
-  (is (= (model/score-for-node mocked-inv-tree 5) 1.0))
+  (is (= (model/score-for-node mocked-inv-tree 5) 1))
   (is (= (model/score-for-node mocked-inv-tree 6) 0))
   (is (= (model/score-for-node mocked-inv-tree 7) 0))
   (is (= (model/score-for-node mocked-inv-tree 8) 0))
