@@ -91,6 +91,6 @@
 
 (defn insert-invite [inviter invited]
   "Insert new invitation to global invites"
-  (cond
-    (and (not (already-invited @invites invited))) (update-invites (insert-new-invite @invites inviter invited))
-    (and (already-invited @invites invited) (= (height-from-node @invites inviter) 0)) (update-invites (update-height @invites inviter))))
+  (if (and (already-invited @invites invited) (= (height-from-node @invites inviter) 0))
+    (update-invites (update-height @invites inviter))
+    (update-invites (insert-new-invite @invites inviter invited))))
