@@ -34,58 +34,56 @@
   (is (= (model/score-factor 4) 1.875)))
 
 ; ---------------------------------------------------
-; ---------------------------------------------------
-;                 MUTABLE MODEL TESTS
-; ---------------------------------------------------
-; ---------------------------------------------------
-; ---------------------------------------------------
 ;                 HEIGHT FOR NODE TESTS
 ; ---------------------------------------------------
 (deftest height-for-node-test
   (println "[INFO] Running test: height-for-node-test")
-  (dosync (ref-set model/invitations-tree mocked-inv-tree))
-  (is (= (model/height-from-node 1) 5))
-  (is (= (model/height-from-node 2) 1))
-  (is (= (model/height-from-node 3) 4))
-  (is (= (model/height-from-node 4) 3))
-  (is (= (model/height-from-node 5) 2))
-  (is (= (model/height-from-node 6) 1))
-  (is (= (model/height-from-node 7) 1))
-  (is (= (model/height-from-node 8) 0))
-  (is (= (model/height-from-node 9) 0))
-  (is (= (model/height-from-node 10) 1))
-  (is (= (model/height-from-node 11) 0)))
+  (is (= (model/height-from-node mocked-inv-tree 1) 5))
+  (is (= (model/height-from-node mocked-inv-tree 2) 1))
+  (is (= (model/height-from-node mocked-inv-tree 3) 4))
+  (is (= (model/height-from-node mocked-inv-tree 4) 3))
+  (is (= (model/height-from-node mocked-inv-tree 5) 2))
+  (is (= (model/height-from-node mocked-inv-tree 6) 1))
+  (is (= (model/height-from-node mocked-inv-tree 7) 1))
+  (is (= (model/height-from-node mocked-inv-tree 8) 0))
+  (is (= (model/height-from-node mocked-inv-tree 9) 0))
+  (is (= (model/height-from-node mocked-inv-tree 10) 1))
+  (is (= (model/height-from-node mocked-inv-tree 11) 0)))
 
 ; ---------------------------------------------------
 ;                 SCORE FOR NODE TESTS
 ; ---------------------------------------------------
 (deftest score-for-node-test
   (println "[INFO] Running test: score-for-node-test")
-  (dosync (ref-set model/invitations-tree mocked-inv-tree))
-  (is (= (model/score-for-node 1) 2.875))
-  (is (= (model/score-for-node 2) 0))
-  (is (= (model/score-for-node 3) 1.75))
-  (is (= (model/score-for-node 4) 3.5))
-  (is (= (model/score-for-node 5) 1.0))
-  (is (= (model/score-for-node 6) 0))
-  (is (= (model/score-for-node 7) 0))
-  (is (= (model/score-for-node 8) 0))
-  (is (= (model/score-for-node 9) 0))
-  (is (= (model/score-for-node 10) 0))
-  (is (= (model/score-for-node 11) 0)))
+  (is (= (model/score-for-node mocked-inv-tree 1) 2.875))
+  (is (= (model/score-for-node mocked-inv-tree 2) 0))
+  (is (= (model/score-for-node mocked-inv-tree 3) 1.75))
+  (is (= (model/score-for-node mocked-inv-tree 4) 3.5))
+  (is (= (model/score-for-node mocked-inv-tree 5) 1.0))
+  (is (= (model/score-for-node mocked-inv-tree 6) 0))
+  (is (= (model/score-for-node mocked-inv-tree 7) 0))
+  (is (= (model/score-for-node mocked-inv-tree 8) 0))
+  (is (= (model/score-for-node mocked-inv-tree 9) 0))
+  (is (= (model/score-for-node mocked-inv-tree 10) 0))
+  (is (= (model/score-for-node mocked-inv-tree 11) 0)))
 
 ; ---------------------------------------------------
 ;                ALREADY INVITED TEST
 ; ---------------------------------------------------
 (deftest already-invited-test
   (println "[INFO] Running test: already-invited-test")
-  (dosync (ref-set model/invitations-tree mocked-inv-tree))
-  (is (= (model/already-invited 4) true))
-  (is (= (model/already-invited 5) true))
-  (is (= (model/already-invited 6) true))
-  (is (= (model/already-invited 10) true))
-  (is (= (model/already-invited 12) false))
-  (is (= (model/already-invited 14) false)))
+  (is (= (model/already-invited mocked-inv-tree 4) true))
+  (is (= (model/already-invited mocked-inv-tree 5) true))
+  (is (= (model/already-invited mocked-inv-tree 6) true))
+  (is (= (model/already-invited mocked-inv-tree 10) true))
+  (is (= (model/already-invited mocked-inv-tree 12) false))
+  (is (= (model/already-invited mocked-inv-tree 14) false)))
+
+; ---------------------------------------------------
+; ---------------------------------------------------
+;                 MUTABLE MODEL TESTS
+; ---------------------------------------------------
+; ---------------------------------------------------
 
 ; ---------------------------------------------------
 ;                   INSERTION TEST
