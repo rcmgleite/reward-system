@@ -80,12 +80,12 @@
 (def invites (atom {}))
 
 ; global variable that holds the calculated score for the invites given
-(def score-result (atom {}))
+;(def score-result (atom {}))
 
-; it acts like a cache so that a request to score doesn't have to calculate it every time.
 (defn calc-score []
   "Calculate score for all nodes on tree"
-  (reset! score-result (into {} (for [[k v] @invites] [k (score-for-node @invites k)]))))
+  ;(reset! score-result (into {} (for [[k v] @invites] [k (score-for-node @invites k)])))
+  (into (sorted-map) (for [[k v] @invites] [k (score-for-node @invites k)])))
 
 (defn update-invites [updated-tree]
   "update atom variable using alter with merge as fn"

@@ -13,7 +13,7 @@
 
 ; Score endpoint
 (defn score-handler [request]
-  (ring-resp/response (json/write-str (into (sorted-map) (model/calc-score)))))
+  (ring-resp/header (ring-resp/response (json/write-str (model/calc-score))) "Content-Type" "application/json"))
 
 ; New invitation endpoint
 (defn invitation-handler [request]
@@ -21,8 +21,8 @@
     (if (get request :valid-input)
       (do
         (model/insert-invite inviter invited)
-        (ring-resp/response (json/write-str {:message success-msg})))
-      {:status 400 :headers {"Content-Type" "application/json"} :body (json/write-str {:message error-msg})})))
+        (ring-resp/header (ring-resp/response (json/write-str {:message success-msg})) "Content-Type" "application/json"))
+      (ring-resp/status (ring-resp/header (ring-resp/response (json/write-str {:message error-msg})) "Content-Type" "application/json") 400))))
 
 (defroutes routes
     [[["/api/score" {:get score-handler}]
