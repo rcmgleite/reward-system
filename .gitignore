@@ -4,5 +4,4 @@
 .nrepl-port 
 .idea
 target
-config/logback.xml
 nubank.iml
