@@ -14,13 +14,12 @@
 ; New invitation endpoint
 (defn invitation-handler [request]
   (let [inviter (get-in request [:params :inviter]) invited (get-in request [:params :invited])]
-      (model/insert-invite inviter invited)
-      (ring-resp/response (json/write-str {}))))
+    (model/insert-invite inviter invited)
+    (ring-resp/response (json/write-str {}))))
 
 (defroutes routes
     [[["/api/score" {:get score-handler}] ["/api/invitations" {:post invitation-handler}]]])
 
-;; Consumed by helloworld.server/create-server
 (def service {:env :prod
                             ::bootstrap/routes routes
                             ::bootstrap/resource-path "/public"
