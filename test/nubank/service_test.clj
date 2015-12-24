@@ -14,6 +14,6 @@
 
 (deftest insert-invite-endpoint-test
   (is (.contains
-       (:body (response-for service :post "/api/invitations?inviter=11&invited=12"))
+       (:body (response-for service :post "/api/invite"))
        "{}")))
 

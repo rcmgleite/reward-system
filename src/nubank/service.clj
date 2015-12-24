@@ -5,7 +5,8 @@
             [io.pedestal.http.route.definition :refer [defroutes]]
             [clojure.data.json :as json]
             [ring.util.response :as ring-resp]
-            [nubank.model :as model]))
+            [nubank.model :as model]
+            [nubank.interceptors :as interceptors]))
 
 ; Score endpoint
 (defn score-handler [request]
@@ -13,13 +14,18 @@
 
 ; New invitation endpoint
 (defn invitation-handler [request]
-  (let [inviter (get-in request [:params :inviter]) invited (get-in request [:params :invited])]
-    (model/insert-invite inviter invited)
-    (ring-resp/response (json/write-str {}))))
+  (let [inviter (get-in request [:json-params :inviter]) invited (get-in request [:json-params :invited])]
+    (if (get request :valid-input)
+      (do
+        (model/insert-invite inviter invited)
+        (ring-resp/response (json/write-str {})))
+      {:status 400 :body "Inviter and invited must be integers"})))
 
 (defroutes routes
-    [[["/api/score" {:get score-handler}] ["/api/invitations" {:post invitation-handler}]]])
-
+    [[["/api/score" {:get score-handler}]
+      ["/api/invite" {:post invitation-handler}
+       ^:interceptors [(body-params/body-params) interceptors/insert-invite-validator]]]])
+; interceptors/insert-invite-validator
 (def service {:env :prod
                             ::bootstrap/routes routes
                             ::bootstrap/resource-path "/public"
