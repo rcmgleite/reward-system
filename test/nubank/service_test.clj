@@ -7,13 +7,32 @@
 (def service
   (::bootstrap/service-fn (bootstrap/create-servlet service/service)))
 
-;(deftest get-score-endpoint-test
-;  (is (=
-;       (:body (response-for service :get "/api/score"))
-;       "{\"1\":2.875,\"2\":0,\"3\":1.75,\"4\":3.5,\"5\":1,\"6\":0,\"7\":0,\"8\":0,\"9\":0,\"10\":0,\"11\":0}")))
-;
-;(deftest insert-invite-endpoint-test
-;  (is (.contains
-;       (:body (response-for service :post "/api/invite"))
-;       "{}")))
+(deftest endpoint-insert-correct-invite-test
+  (println "[INFO] Running test: endpoint-insert-correct-invite-test")
+  (let [resp (response-for service :post "/api/invite" :headers {"Content-Type" "application/json"} :body "{\"inviter\":190, \"invited\":200}")]
+    (is (= (:status resp) 200))
+    (is (.contains (:body resp) service/success-msg))
+    ))
+
+(deftest endpoint-insert-invite-with-inviter-as-string-test
+  (println "[INFO] Running test: endpoint-insert-invite-with-inviter-as-string-test")
+  (let [resp (response-for service :post "/api/invite" :headers {"Content-Type" "application/json"} :body "{\"inviter\":\"190\", \"invited\":200}")]
+    (is (= (:status resp) 400))
+    (is (.contains (:body resp) service/error-msg))
+    ))
+
+(deftest endpoint-insert-invite-with-bizarre-input-test
+  (println "[INFO] Running test: endpoint-insert-invite-with-bizarre-input-test")
+  (let [resp (response-for service :post "/api/invite" :headers {"Content-Type" "application/json"} :body "{\"inviter\":\"abcd%.9\", \"invited\":\"!@#$%\"}")]
+    (is (= (:status resp) 400))
+    (is (.contains (:body resp) service/error-msg))
+    ))
+
+(deftest endpoint-insert-invite-no-post-body-test
+  (println "[INFO] Running test: endpoint-insert-invite-no-post-body-test")
+  (let [resp (response-for service :post "/api/invite")]
+    (is (= (:status resp) 400))
+    (is (.contains (:body resp) service/error-msg))
+    ))
+
 

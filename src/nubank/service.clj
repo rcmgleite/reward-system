@@ -8,6 +8,9 @@
             [nubank.model :as model]
             [nubank.interceptors :as interceptors]))
 
+(def success-msg "invite inserted successfully")
+(def error-msg "Inviter and invited must be integers")
+
 ; Score endpoint
 (defn score-handler [request]
   (ring-resp/response (json/write-str (into (sorted-map) (model/calc-score)))))
@@ -18,8 +21,8 @@
     (if (get request :valid-input)
       (do
         (model/insert-invite inviter invited)
-        (ring-resp/response (json/write-str {})))
-      {:status 400 :body "Inviter and invited must be integers"})))
+        (ring-resp/response (json/write-str {:message success-msg})))
+      {:status 400 :body error-msg})))
 
 (defroutes routes
     [[["/api/score" {:get score-handler}]
