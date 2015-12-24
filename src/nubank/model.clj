@@ -24,6 +24,7 @@
   "returns the subtree-h for a given node"
   (:subtree-h (get tree n)))
 
+; Complexity: O(branching factor)
 (defn score-for-node [tree n]
   "returns the score for a given node"
   (let [children (:children (get tree n))]
@@ -46,6 +47,7 @@
   (let [node-to-update (get inv-tree n)]
     (assoc-in inv-tree [n :subtree-h] (inc (:subtree-h node-to-update)))))
 
+; Complexity: O(height of the subtree)
 (defn update-height [tree n]
   "function that updates the h of a sub-tree on the invites tree."
   (loop [tree tree n n]
