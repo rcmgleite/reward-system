@@ -67,7 +67,6 @@
   "Insert invited node on the given tree tree."
   (assoc tree invited (new-node -1 inviter [])))
 
-; FIXME - smells... Maybe cond?
 (defn insert-new-invite [tree inviter invited]
   "Insert invitation on tree. Must be called inside transaction"
   (if (empty? tree)

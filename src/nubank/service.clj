@@ -22,7 +22,7 @@
       (do
         (model/insert-invite inviter invited)
         (ring-resp/response (json/write-str {:message success-msg})))
-      {:status 400 :body error-msg})))
+      {:status 400 :headers {"Content-Type" "application/json"} :body (json/write-str {:message error-msg})})))
 
 (defroutes routes
     [[["/api/score" {:get score-handler}]
