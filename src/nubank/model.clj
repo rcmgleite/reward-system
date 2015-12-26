@@ -71,7 +71,8 @@
   "Insert invitation on tree. Must be called inside transaction"
   (if (empty? tree)
     (update-height (insert-invited-node (insert-root-node tree inviter invited) inviter invited) invited)
-    (when (already-invited tree inviter) (update-height (insert-invited-node (append-children tree inviter invited) inviter invited) invited))))
+    (when (already-invited tree inviter)
+      (update-height (insert-invited-node (append-children tree inviter invited) inviter invited) invited))))
 
 ; -------------------------------------
 ;            MUTABLE MODEL
@@ -87,7 +88,7 @@
   (if (empty? @score-result)
     (do
       (let [invs @invites]
-        (reset! score-result (into {} (for [[k v] invs] [k (score-for-node invs k)])))))
+        (reset! score-result (into {} (for [[k _] invs] [k (score-for-node invs k)])))))
     @score-result))
 
 (defn update-invites [updated-tree]

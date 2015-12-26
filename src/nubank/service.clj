@@ -13,18 +13,22 @@
 (def inviter-not-invited-msg "Inviter not previously invited")
 
 (defn err-response [msg]
-  (ring-resp/status (ring-resp/header (ring-resp/response (json/write-str {:message msg})) "Content-Type" "application/json") 400))
+  {:status  400
+   :headers {"Content-Type" "application/json"}
+   :body    (json/write-str {:message msg})})
 
 (defn succeess-response [msg]
-  (ring-resp/header (ring-resp/response (json/write-str {:message msg})) "Content-Type" "application/json"))
+  {:status  200
+   :headers {"Content-Type" "application/json"}
+   :body    (json/write-str msg)})
 
 ; Score endpoint
 (defn score-handler [request]
-  (ring-resp/header (ring-resp/response (json/write-str (model/calc-score))) "Content-Type" "application/json"))
+  (succeess-response (model/calc-score)))
 
 (defn do-invite [inviter invited]
   (model/insert-invite-async inviter invited)
-  (succeess-response success-msg))
+  (succeess-response {:message success-msg}))
 
 ; New invitation endpoint
 (defn invitation-handler [request]

@@ -62,7 +62,7 @@ The implementation uses a map to represent the tree: <br>
 
 ### 2.3 - Node insertion
 Nodes can be added to the tree on invite insertion. <br>
-When each node is inserted, the application adds the new node and update the height of all nodes on that subtree recursively. <br>
+When each node is inserted, the application update the height of all nodes on its subtree recursively. <br>
 
 ### 2.4 - Invite insertion
 The invite insertion function has the following constraints: <br>
@@ -102,4 +102,4 @@ project root.
 - Method: POST
 - Path: /api/invite
 - Content-Type: application/json
-- Body: {inviter: x, inviter: y}
+- Body: {inviter: x, invited: y}

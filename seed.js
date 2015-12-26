@@ -1,3 +1,6 @@
+/*
+ *	Program used to test the insert invite endpoint for concurrent requests.
+ */
 var http = require('http');
 
 function make_request(host, path, port, method, request_body){
@@ -77,5 +80,4 @@ function insert_invitation(post_data) {
 	invitations.forEach(function(invite){
 		insert_invitation(invite, {});
 	})
-
 }());
