@@ -336,7 +336,6 @@
   (model/insert-invite 13 14)
   (model/insert-invite 14 11)
   (is (= @model/invites mocked-inv-tree-5))
-  (println @model/invites)
   (def score (model/calc-score))
   (is (= (get score 1) 5.25))
   (is (= (get score 2) 1.5))

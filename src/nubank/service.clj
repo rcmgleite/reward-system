@@ -20,7 +20,7 @@
   (let [inviter (get-in request [:json-params :inviter]) invited (get-in request [:json-params :invited])]
     (if (get request :valid-input)
       (do
-        (model/insert-invite inviter invited)
+        (model/insert-invite-async inviter invited)
         (ring-resp/header (ring-resp/response (json/write-str {:message success-msg})) "Content-Type" "application/json"))
       (ring-resp/status (ring-resp/header (ring-resp/response (json/write-str {:message error-msg})) "Content-Type" "application/json") 400))))
 

@@ -80,12 +80,15 @@
 (def invites (atom {}))
 
 ; global variable that holds the calculated score for the invites given
-;(def score-result (atom {}))
+(def score-result (atom {}))
 
 (defn calc-score []
-  "Calculate score for all nodes on tree"
-  ;(reset! score-result (into {} (for [[k v] @invites] [k (score-for-node @invites k)])))
-  (into (sorted-map) (for [[k v] @invites] [k (score-for-node @invites k)])))
+  "Calculate score for all nodes on tree. If score-result is not empty, it will return the cached value"
+  (if (empty? @score-result)
+    (do
+      (let [invs @invites]
+        (reset! score-result (into {} (for [[k v] invs] [k (score-for-node invs k)])))))
+    @score-result))
 
 (defn update-invites [updated-tree]
   "update atom variable using alter with merge as fn"
@@ -93,6 +96,11 @@
 
 (defn insert-invite [inviter invited]
   "Insert new invitation to global invites"
+  (reset! score-result {})
   (if (already-invited @invites invited)
     (when (= (height-from-node @invites inviter) 0) (update-invites (update-height @invites inviter)))
     (update-invites (insert-new-invite @invites inviter invited))))
+
+(defn insert-invite-async [inviter invited]
+  "Executes the insert-invite function within a new thread"
+  (future (insert-invite inviter invited)))
