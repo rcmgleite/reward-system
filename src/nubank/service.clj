@@ -22,9 +22,17 @@
    :headers {"Content-Type" "application/json"}
    :body    (json/write-str msg)})
 
+; Discovery endpoint
+(defn discovery-handler [request]
+  (succeess-response {:routes { :insert_invite
+                      {:method "POST" :path "/api/invite" :Content-Type "application/json" :body "{inviter: x, invited: y}"}
+                      :score
+                      {:method "GET" :path "/api/score"}}
+                      }))
+
 ; Score endpoint
 (defn score-handler [request]
-  (succeess-response (model/calc-score)))
+  (succeess-response (into (sorted-map) (model/calc-score))))
 
 (defn do-invite [inviter invited]
   (model/insert-invite-async inviter invited)
@@ -41,7 +49,9 @@
       (err-response invalid-args-error-msg))))
 
 (defroutes routes
-    [[["/api/score" {:get score-handler}]
+    [[
+      ["/" {:get discovery-handler}]
+      ["/api/score" {:get score-handler}]
       ["/api/invite" {:post invitation-handler}
        ^:interceptors [(body-params/body-params) interceptors/insert-invite-validator]]]])
 ; interceptors/insert-invite-validator

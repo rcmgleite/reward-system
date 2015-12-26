@@ -94,11 +94,15 @@ project root.
 
 ## 5 - Endpoints
 
-### 5.1 Retreive score:
+### 5.1 Discovery:
+-	Method: GET
+-	Path: /
+
+### 5.2 Retreive score:
 -  Method: GET
 -  Path: /api/score
 
-### 5.2 Insert invite
+### 5.3 Insert invite
 - Method: POST
 - Path: /api/invite
 - Content-Type: application/json
