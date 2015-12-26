@@ -39,33 +39,45 @@ If a child subtree has height 2, it's contribuition to it's parent score is: <br
 and so on... <br>
 
 Given the tree: <br>
-![alt tag](http://www.programmerinterview.com/images/BInaryTree.png)
+![alt tag](http://lcm.csa.iisc.ernet.in/dsa/img151.gif)
 
-### 2.1 - Example 1: Score of node 2.
-1. The subtree with root on 7 has height 2.
-2. The subtree with root on 5 has height  2.
+### 2.1 - Example 1: Score of node 1.
+1. The subtree with root on 2 has height 2.
+2. The subtree with root on 3 has height  1.
 
-Using 1 and 2, node's 2 score is:
--  ((1/2)⁰ + (1/2)¹) + ((1/2)⁰ + (1/2)¹) = 3.0
+Using 1 and 2, node's 1 score is:
+-  ((1/2)⁰ + (1/2)¹) + ((1/2)⁰) = 2.5
 
-### 2.2 - Example 2: Score of node 7.
-3. The subtree with root on node 2 has height 0
-4. The subtree with root on node 6 has height 1
+### 2.2 - Example 2: Score of node 2.
+3. The subtree with root on node 4 has height 1
+4. The subtree with root on node 5 has height 0
 
-Using 3 and 4, node's 7 score is:
--  0 + (1/2)⁰ = 1.0 <br>
+Using 3 and 4, node's 2 score is:
+-  (1/2)⁰ + 0 = 1.0 <br>
 
 The datastructure used to develop the solution was a tree. <br>
 The implementation uses a map to represent the tree: <br>
--  key: index of the node (given on input.txt)
+-  key: index(name) of the node (given on input.txt)
 -  value: another map that has: the subtree-height, the node parent and a vector with it's children.
 
-### 2.3 - node insertion
+### 2.3 - Node insertion
+Nodes can be added to the tree on invite insertion. <br>
 When each node is inserted, the application adds the new node and update the height of all nodes on that subtree recursively. <br>
 
-### 2.4 - score 
+### 2.4 - Invite insertion
+The invite insertion function has the following constraints: <br>
+1. The inviter must have been invited before inviting someone <br>
+2. Inviter and invited must be numbers <br>
+Also, the endpoint for inserting an invite execute the insertion asynchronously.
+The endpoint verifies the input and creates a new thread to execute the insertion.
+
+### 2.5 - score 
 To calculate the score of a node, the application just find all the children of the given node and calculates each subtree
 contribution to the score based on it's height. As the height was already computed when the node was inserted, the score becomes much cheaper than if it had to traverse all subtree-trees. <br>
+To be even cheaper, once the score is calculated, it's cached on an atom. <br>
+Every time a new invitation is made, the score atom is cleared. The function that calculates the score verifies if the score atom is empty.
+If it is, the calculation is executed. If it's not, the cached value is returned.
+
 
 ## 3 - How to run
 -  To start the application, execute: <br>
@@ -76,6 +88,18 @@ or <br>
 Any of those commands will start the server and already seed the application with the invites located on 'input.txt' on
 project root.
 
+## 4 - How to test
+-  To execute all tests, execute: <br>
+   `$ lein test` <br>
 
+## 5 - Endpoints
 
+### 5.1 Retreive score:
+-  Method: GET
+-  Path: /api/score
 
+### 5.2 Insert invite
+- Method: POST
+- Path: /api/invite
+- Content-Type: application/json
+- Body: {inviter: x, inviter: y}
