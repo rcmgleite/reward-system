@@ -71,13 +71,13 @@
   "Insert invitation on tree. Must be called inside transaction"
   (if (empty? tree)
     (update-height (insert-invited-node (insert-root-node tree inviter invited) inviter invited) invited)
-    (update-height (insert-invited-node (append-children tree inviter invited) inviter invited) invited)))
+    (when (already-invited tree inviter) (update-height (insert-invited-node (append-children tree inviter invited) inviter invited) invited))))
 
 ; -------------------------------------
 ;            MUTABLE MODEL
 ; -------------------------------------
 ; global variable that holds all invites
-(def invites (atom {}))
+(def invites (ref {}))
 
 ; global variable that holds the calculated score for the invites given
 (def score-result (atom {}))
@@ -91,15 +91,16 @@
     @score-result))
 
 (defn update-invites [updated-tree]
-  "update atom variable using alter with merge as fn"
-  (swap! invites merge updated-tree))
+  "update ref variable using alter with merge as fn. Must be called inside transaction"
+  (alter invites merge updated-tree))
 
 (defn insert-invite [inviter invited]
   "Insert new invitation to global invites"
   (reset! score-result {})
-  (if (already-invited @invites invited)
-    (when (= (height-from-node @invites inviter) 0) (update-invites (update-height @invites inviter)))
-    (update-invites (insert-new-invite @invites inviter invited))))
+  (dosync
+    (if (already-invited @invites invited)
+      (when (= (height-from-node @invites inviter) 0) (update-invites (update-height @invites inviter)))
+      (update-invites (insert-new-invite @invites inviter invited)))))
 
 (defn insert-invite-async [inviter invited]
   "Executes the insert-invite function within a new thread"

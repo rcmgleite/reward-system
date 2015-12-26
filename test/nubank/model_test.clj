@@ -206,7 +206,8 @@
 ; ---------------------------------------------------
 (deftest insertion-test-1
   (println "[INFO] Running test: insertion-test")
-  (reset! model/invites {})
+  (dosync
+    (ref-set model/invites {}))
   (model/insert-invite 1 2)
   (model/insert-invite 1 1)
   (model/insert-invite 1 3)
@@ -240,7 +241,8 @@
 
 (deftest insertion-test-2
   (println "[INFO] Running test: insertion-test-2")
-  (reset! model/invites {})
+  (dosync
+    (ref-set model/invites {}))
   (model/insert-invite 1 2)
   (model/insert-invite 1 3)
   (model/insert-invite 2 4)
@@ -267,7 +269,8 @@
 
 (deftest insertion-test-3
   (println "[INFO] Running test: insertion-test-3")
-  (reset! model/invites {})
+  (dosync
+    (ref-set model/invites {}))
   (model/insert-invite 1 2)
   (model/insert-invite 1 3)
   (model/insert-invite 3 4)
@@ -289,7 +292,8 @@
 
 (deftest insertion-tree-4
   (println "[INFO] Running test: insertion-test-4")
-  (reset! model/invites {})
+  (dosync
+    (ref-set model/invites {}))
   (model/insert-invite 1 2)
   (model/insert-invite 1 3)
   (model/insert-invite 3 4)
@@ -316,7 +320,8 @@
 
 (deftest insertion-test-5
   (println "[INFO] Running test: insertion-test-5")
-  (reset! model/invites {})
+  (dosync
+    (ref-set model/invites {}))
   (model/insert-invite 1 2)
   (model/insert-invite 1 3)
   (model/insert-invite 2 7)
