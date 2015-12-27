@@ -70,9 +70,9 @@
 (defn insert-new-invite [tree inviter invited]
   "Insert invitation on tree. Must be called inside transaction"
   (if (empty? tree)
-    (update-height (insert-invited-node (insert-root-node tree inviter invited) inviter invited) invited)
+    (-> tree (insert-root-node inviter invited) (insert-invited-node inviter invited) (update-height invited))
     (when (already-invited tree inviter)
-      (update-height (insert-invited-node (append-children tree inviter invited) inviter invited) invited))))
+      (-> tree (append-children inviter invited) (insert-invited-node inviter invited) (update-height invited)))))
 
 ; -------------------------------------
 ;            MUTABLE MODEL
